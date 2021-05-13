@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using Referral.Models;
 using Referral.RestClient;
 using Referral.Web.Contract;
 using Referral.Web.Services;
@@ -32,7 +30,7 @@ namespace Referral.Web.Extension
                                 .RequireAuthenticatedUser()
                                 .Build();
                 o.Filters.Add(new AuthorizeFilter(policy));
-            });           
+            });
 
             //services.AddTransient<ISmsSenderService, SmsSenderService>();
             //services.AddTransient<FunctionalService, FunctionalService>();

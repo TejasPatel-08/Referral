@@ -20,6 +20,6 @@ namespace Referral.Models
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(10, 2)")]
         public decimal PurchaseEarnedPoints { get; set; }
-        
+
     }
 }

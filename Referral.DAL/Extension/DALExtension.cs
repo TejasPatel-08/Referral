@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Referral.DAL.Context;
-using Referral.Models;
 using Referral.DAL.Repository;
+using Referral.Models;
 
 namespace Referral.DAL.Extension
 {
@@ -26,7 +26,7 @@ namespace Referral.DAL.Extension
             services.AddTransient<OperatorsRepository>();
             services.AddTransient<RedeemPointsRepository>();
             services.AddTransient<ReferralConfigurationRepository>();
-            services.AddTransient<CommonRepository>();           
+            services.AddTransient<CommonRepository>();
         }
     }
 }

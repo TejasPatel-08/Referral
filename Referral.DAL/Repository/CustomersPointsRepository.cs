@@ -41,9 +41,9 @@ namespace Referral.DAL.Repository
                 {
                     CustomerId = item,
                     RedeemPoint = await _applicationDbContext.CustomersPoints.Where(x => x.PointType == PointType.Redeem && x.CustomerId == item).SumAsync(x => x.PointEarned),
-                    PurchasePoints =await _applicationDbContext.CustomersPoints.Where(x => x.PointType == PointType.Purchase && x.CustomerId == item).SumAsync(x => x.PointEarned),
-                    ReferralPoints =await _applicationDbContext.CustomersPoints.Where(x => x.PointType == PointType.Referral && x.CustomerId == item).SumAsync(x => x.PointEarned),
-                    TotalPoints =await _applicationDbContext.CustomersPoints.Where(x => x.CustomerId == item).SumAsync(x => x.PointEarned)
+                    PurchasePoints = await _applicationDbContext.CustomersPoints.Where(x => x.PointType == PointType.Purchase && x.CustomerId == item).SumAsync(x => x.PointEarned),
+                    ReferralPoints = await _applicationDbContext.CustomersPoints.Where(x => x.PointType == PointType.Referral && x.CustomerId == item).SumAsync(x => x.PointEarned),
+                    TotalPoints = await _applicationDbContext.CustomersPoints.Where(x => x.CustomerId == item).SumAsync(x => x.PointEarned)
                 };
 
                 customersPointsVMs.Add(customersPointsVMs1);

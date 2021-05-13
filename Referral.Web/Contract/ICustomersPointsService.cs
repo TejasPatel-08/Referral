@@ -8,6 +8,6 @@ namespace Referral.Web.Contract
     public interface ICustomersPointsService
     {
         Task<List<CustomersPoints>> List(Guid userId);
-        Task<List<CustomersPointsVM>> CustomersPointList();        
+        Task<List<CustomersPointsVM>> CustomersPointList();
     }
 }

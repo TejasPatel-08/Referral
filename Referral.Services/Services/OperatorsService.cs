@@ -1,7 +1,6 @@
 ﻿using Referral.DAL.Repository;
 using Referral.Models;
 using Referral.Services.Contracts;
-using Referral.Services.Extension;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

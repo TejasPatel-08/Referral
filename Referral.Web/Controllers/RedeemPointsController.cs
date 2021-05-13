@@ -49,7 +49,7 @@ namespace Referral.Web.Controllers
         [HttpPost]
         public async Task<RedeemPoints> RedeemPurchase_Get(Guid CustomerId, decimal PurchaseAmount)
         {
-            RedeemPoints redeemPoints = await _redeemPointsService.RedeemPurchase_Get(CustomerId,PurchaseAmount);
+            RedeemPoints redeemPoints = await _redeemPointsService.RedeemPurchase_Get(CustomerId, PurchaseAmount);
             return redeemPoints;
         }
 

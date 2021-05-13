@@ -32,7 +32,7 @@
 <body class="hold-transition register-page">
     <div class="w-50" style="margin-top:100px">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <div class="card card-secondary">
+            <div class="card shadow card-secondary">
 
                 <div class="card-header">
                     <h4 class="card-title">Create a new account</h4>
@@ -65,7 +65,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="Input.PhoneNumber"></label>
-                                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="phonenumber" />
+                                <input asp-for="Input.PhoneNumber" type="number" class="form-control" placeholder="phonenumber" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                       maxlength="10" />
                             </div>
                         </div>
                         <div class="col-md-6">

@@ -31,6 +31,6 @@ namespace Referral.API.Controllers
         public async Task<List<CustomersPointsVM>> CustomersPointList()
         {
             return await _customersPointsService.CustomersPointList();
-        }        
+        }
     }
 }

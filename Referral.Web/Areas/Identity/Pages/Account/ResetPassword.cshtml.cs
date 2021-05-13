@@ -27,7 +27,6 @@ namespace Referral.Web.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [Phone]
             public string PhoneNumber { get; set; }
 
             [Required]
@@ -43,7 +42,7 @@ namespace Referral.Web.Areas.Identity.Pages.Account
             public string Code { get; set; }
         }
 
-        public IActionResult OnGet(string code = null)
+        public IActionResult OnGet(string code = null, string phoneNumber = "")
         {
             if (code == null)
             {
@@ -53,7 +52,8 @@ namespace Referral.Web.Areas.Identity.Pages.Account
             {
                 Input = new InputModel
                 {
-                    Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
+                    Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code)),
+                    PhoneNumber = phoneNumber,
                 };
                 return Page();
             }

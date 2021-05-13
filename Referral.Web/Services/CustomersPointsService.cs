@@ -34,6 +34,6 @@ namespace Referral.Web.Services
                .ClearHeaders()
                .GetAsync<List<CustomersPointsVM>>($"{_apiUrl}/CustomersPoints/CustomersPointList");
             return result.Result;
-        }        
+        }
     }
 }

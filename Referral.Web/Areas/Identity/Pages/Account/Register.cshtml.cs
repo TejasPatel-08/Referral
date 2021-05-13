@@ -67,7 +67,7 @@ namespace Referral.Web.Areas.Identity.Pages.Account
 
             [Required(ErrorMessage = "PhoneNumber is required")]
             [DataType(DataType.PhoneNumber)]
-            [Phone]
+            [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
             public string PhoneNumber { get; set; }
         }
 
@@ -83,7 +83,7 @@ namespace Referral.Web.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new Customers { UserName = Input.PhoneNumber, FirstName=Input.FirstName,LastName=Input.LastName, Email = Input.Email, EmailConfirmed = true, PhoneNumber = Input.PhoneNumber, PhoneNumberConfirmed = true };
+                var user = new Customers { UserName = Input.PhoneNumber, FirstName = Input.FirstName, LastName = Input.LastName, Email = Input.Email, EmailConfirmed = true, PhoneNumber = Input.PhoneNumber, PhoneNumberConfirmed = true };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

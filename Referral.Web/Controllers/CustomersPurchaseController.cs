@@ -27,7 +27,7 @@ namespace Referral.Web.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Create_Post(CustomersPurchaseVM customersPurchaseVM)
-        {            
+        {
             await _customersPurchaseService.Create_Post(customersPurchaseVM);
             TempData["AlertMessage"] = "Data has been created successfully";
             return RedirectToAction(nameof(List));

@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Referral.Models;
 //using Referral.Services;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,7 +32,9 @@ namespace Referral.Web.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "PhoneNumber is required")]
+            [DataType(DataType.PhoneNumber)]
+            [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
             public string PhoneNumber { get; set; }
         }
 
@@ -40,27 +42,36 @@ namespace Referral.Web.Areas.Identity.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                var user = _userManager.Users.ToList().SingleOrDefault(x => x.PhoneNumber == Input.PhoneNumber);
-                if (user != null || (await _userManager.IsEmailConfirmedAsync(user)))
+                var user = await _userManager.Users.SingleOrDefaultAsync(x => x.PhoneNumber == Input.PhoneNumber);
+                if (user != null)
                 {
-                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    if (await _userManager.IsEmailConfirmedAsync(user))
+                    {
+                        var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-                    ////var callbackUrl = Url.Page(
-                    ////    "/Account/ResetPassword",
-                    ////    pageHandler: null,
-                    ////    values: new { area = "Identity", code },
-                    ////    protocol: Request.Scheme);
+                        ////var callbackUrl = Url.Page(
+                        ////    "/Account/ResetPassword",
+                        ////    pageHandler: null,
+                        ////    values: new { area = "Identity", code },
+                        ////    protocol: Request.Scheme);
 
-                    //var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Scheme);
+                        //var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Scheme);
 
-                    //var message = $"Please reset your password by clicking here <a href=\"" + HtmlEncoder.Default.Encode(callbackUrl) + "\"></a>.";
-                    //await _smsSenderService.SendSmsAsync(Input.PhoneNumber, message);
+                        //var message = $"Please reset your password by clicking here <a href=\"" + HtmlEncoder.Default.Encode(callbackUrl) + "\"></a>.";
+                        //await _smsSenderService.SendSmsAsync(Input.PhoneNumber, message);
 
-                    return RedirectToPage("ResetPassword", "Account", new { userId = user.Id, code = code }, Request.Scheme);
+                        return RedirectToPage("ResetPassword", "Account", new { userId = user.Id, phoneNumber = Input.PhoneNumber, code = code }, Request.Scheme);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "User not found!!!");
+                        Page();
+                    }
                 }
                 else
                 {
+                    ModelState.AddModelError(string.Empty, "User not found!!!");
                     Page();
                 }
             }

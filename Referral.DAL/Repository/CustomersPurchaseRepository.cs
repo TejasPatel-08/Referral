@@ -59,7 +59,7 @@ namespace Referral.DAL.Repository
             await _applicationDbContext.AddAsync(customersPurchaseVM.CustomersPurchase);
             await _applicationDbContext.SaveChangesAsync();
 
-            if(customersPurchaseVM.redeemPoints.RedeemAmount>0)
+            if (customersPurchaseVM.redeemPoints.RedeemAmount > 0)
             {
                 var redeemAmount = (decimal)Math.Round(customersPurchaseVM.redeemPoints.RedeemAmount / referralConfig.RedeemPointValue);
 

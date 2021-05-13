@@ -1,7 +1,6 @@
 ﻿using Referral.DAL.Repository;
 using Referral.Models;
 using Referral.Services.Contracts;
-using Referral.Services.Extension;
 using System;
 using System.Threading.Tasks;
 
@@ -24,7 +23,7 @@ namespace Referral.Services.Services
             return models;
         }
 
-        public async Task<RedeemPoints> RedeemPurchase_Get(Guid CustomerId,decimal PurchaseAmount)
+        public async Task<RedeemPoints> RedeemPurchase_Get(Guid CustomerId, decimal PurchaseAmount)
         {
             var models = await _redeemPointsRepository.RedeemPurchase_Get(CustomerId, PurchaseAmount);
             return models;

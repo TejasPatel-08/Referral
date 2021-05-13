@@ -1,0 +1,199 @@
+﻿@model IEnumerable<RedeemPoints>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+
+            <div class="card-header">
+                <h2 class="card-title">Redeem Points</h2>
+            </div>
+
+            <form asp-controller="RedeemPoints" id="RedeemPoints_Form" asp-action="RedeemPoints_Post" method="post">
+
+                <div class="card-body">
+                    <div class="row">
+
+                        <partial name="Referral/_SearchCustomerByPhone" />
+
+                        <div class="col-md-12">
+                            <div class="form-group d-flex mt-2">
+                                <button type="button" onclick="SendOTP()" id="SendOtp_Button" class="btn btn-secondary text-nowrap mr-3">Send OTP</button>
+                                <div class="mr-3">
+                                    <input type="number" data-val="true" name="OTP" style="width:145px" class="form-control" id="OTP_Input" placeholder="Enter OTP">
+                                    <span class="text-danger position-absolute" data-valmsg-for="OTP" data-valmsg-replace="true"></span>
+                                </div>
+                                <button type="button" onclick="VerifyOTP()" id="Verify_Button" class="btn btn-secondary" disabled="disabled">Verify</button>
+                                <div class="text-success d-none" id="OtpVerified_div"><i class="fa fa-check-circle m-2 pt-1" aria-hidden="true"></i>Verified</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="PointEarned">Total Points</label>
+                                <input type="number" name="PointEarned" class="form-control" id="PointEarned_Input" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Max Redeem Points</label>
+                                <input type="number" name="MaxRedeem" id="MaxRedeem_Input" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="RedeemAmount">Redeem Amount(₹)</label>
+                                <input type="number" data-val="true" name="RedeemAmount" class="form-control" id="RedeemAmount_Input" placeholder="Enter Redeem Amount" data-val-required="The Redeem Amount field is required.">
+                                <span class="text-danger" data-valmsg-for="RedeemAmount" data-valmsg-replace="true"></span>
+                                <input type="hidden" id="RedeemAmountDummy_Input" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" id="SubmitForm_Button" class="btn btn-primary">Submit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+@if (TempData["AlertMessage"] != null)
+{
+    <input id="AlertMessage" value="@TempData["AlertMessage"]" type="hidden" />
+}
+else
+{
+    <input id="AlertMessage" value="" type="hidden" />
+}
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(function () {
+
+            if ($('#AlertMessage').val() != "") {
+                toastr.success($('#AlertMessage').val())
+            }
+
+            $("#Verify_Button").attr('disabled', true);
+            $("#SubmitForm_Button").attr('disabled', true);
+            $("#SendOtp_Button").attr('disabled', true);
+
+            HideErrorMsg_OnInputClick();
+            CheckRedeemAmont__OnInputClick();
+            CustomerPhoneNumber__OnInputClick();
+        });
+
+        function CheckRedeemAmont__OnInputClick() {
+            $("#RedeemAmount_Input").on("input", function () {
+                if (parseInt($("#RedeemAmount_Input").val()) > parseInt($("#RedeemAmountDummy_Input").val())) {
+                    $('span[data-valmsg-for="RedeemAmount"]').text("Insufficient Redeem Value");
+                }
+                else
+                    $('span[data-valmsg-for="RedeemAmount"]').text("");
+            });
+        }
+
+        function CustomerPhoneNumber__OnInputClick() {
+            $("#CustomerPhoneNumber_Input").on("input", function () {
+                ResetForm();
+            });
+        }
+
+        function HideErrorMsg_OnInputClick() {
+            $("#OTP_Input").on("input", function () {
+                $('span[data-valmsg-for="OTP"]').text("");
+            });
+        }
+
+        function SendOTP() {
+            if (!$('#CustomerPhoneNumber_Input').val() || !$('#CustomerFirstname_Input').val() ) {
+                $('span[data-valmsg-for="OTP"]').text("First Search Phone Number.");
+                return false;
+            }
+            else
+                AjaxSendOTP();
+        }
+
+        function VerifyOTP() {
+            if (!$('#OTP_Input').val()) {
+                $('span[data-valmsg-for="OTP"]').text("The OTP field is required.");
+                return false;
+            }
+            else
+                AjaxVerifyOTP();
+        }
+
+        function AjaxSendOTP() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("SendOTP", "RedeemPoints")',
+                data: { PhoneNumber: $('#CustomerPhoneNumber_Input').val() },
+                success: function (result) {
+                    if (result == true) {
+                        $("#Verify_Button").attr('disabled', false);
+                        $("#SendOtp_Button").attr('disabled', true);
+                    }
+                }
+            });
+        }
+
+        function AjaxVerifyOTP() {
+             $.ajax({
+                 type: 'POST',
+                 url: '@Url.Action("VerifyOTP", "RedeemPoints")',
+                 data: { OTP: $('#OTP_Input').val() },
+                 success: function (result) {
+                     if (result == true) {
+                         RedeemPoints_Get();
+                         $("#SubmitForm_Button").attr('disabled', false);
+                         $("#Verify_Button").attr('disabled', true);
+                         $("#OtpVerified_div").removeClass("d-none");
+                     }
+                     else
+                         $('span[data-valmsg-for="OTP"]').text("OTP not matched");
+                 }
+             });
+        }
+
+        function RedeemPoints_Get() {
+             $.ajax({
+                 type: 'POST',
+                 url: '@Url.Action("RedeemPoints_Get", "RedeemPoints")',
+                 data: { CustomerId: $('#CustomerId_Input').val()},
+                 success: function (result) {
+                     if (result) {
+                         if (result.totalPoint > 0) {
+                             $('#PointEarned_Input').val(result.totalPoint);
+                             $('#MaxRedeem_Input').val(result.maxRedeemPoint);
+                             $('#RedeemAmount_Input').val(result.redeemAmount.toFixed(2));
+                             $('#RedeemAmountDummy_Input').val(result.redeemAmount.toFixed(2));
+                         }
+                         else {
+                             $("#SubmitForm_Button").attr('disabled', true);
+                             $('#PointEarned_Input').val(0);
+                             $('#MaxRedeem_Input').val(0);
+                             $('#RedeemAmount_Input').val(0.00);
+                             $('#RedeemAmountDummy_Input').val(0.00);
+                         }
+                     }
+                 }
+             });
+        }
+
+        function ResetForm() {
+            $("#SendOtp_Button").attr('disabled', false);
+            $("#Verify_Button").attr('disabled', true);
+            $("#SubmitForm_Button").attr('disabled', true);
+            $("#OtpVerified_div").addClass("d-none");
+            $("#PointEarned_Input").val("");
+            $("#MaxRedeem_Input").val("");
+            $("#RedeemAmount_Input").val("");
+            $("#OTP_Input").val("");
+            $("#CustomerFirstname_Input").val("");
+        }
+    </script>
+}
+

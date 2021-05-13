@@ -1,0 +1,68 @@
+﻿@model IEnumerable<CustomersPoints>
+@inject UserManager<Customers> csutomerData
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-secondary">
+
+            <div class="card-header">
+                <h2 class="card-title">Customers Points</h2>
+                <div class="card-tools">
+                    <div class="input-group input-group-sm" style="width: 90px;">
+                        <button type="button" class="btn-sm btn-default" onclick="location.href='@Url.Action("Index", "CustomersPoints")'">
+                            <i class="fa fa-user-plus" aria-hidden="true"></i> Cancel
+                        </button>
+                    </div>
+                </div>                
+            </div>
+
+            <div class="card-body">
+                <table id="table" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>FirstName</th>
+                            <th>LastName</th>
+                            <th>PhoneNumber</th>
+                            <th>Area</th>
+                            <th>PointEarned</th>
+                            <th>PointType</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.OrderByDescending(X => X.CreateDate))
+                        {
+                            Customers customers = await csutomerData.FindByIdAsync(@p.CustomerId.ToString());
+                            <tr>
+                                <td>@customers.FirstName</td>
+                                <td>@customers.LastName</td>
+                                <td>@customers.PhoneNumber</td>
+                                <td>@customers.Area</td>
+                                <td>@p.PointEarned</td>
+                                <td>@p.PointType</td>
+                                <td>@p.CreateDate.ToShortDateString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $("#table").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["csv", "excel", "pdf", "print", "colvis"],
+        }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)');
+    </script>
+}
+
+

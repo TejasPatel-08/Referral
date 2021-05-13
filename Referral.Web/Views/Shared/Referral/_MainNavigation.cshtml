@@ -1,0 +1,119 @@
+﻿@using static Referral.Helpers.NavigationIndicatorHelper;
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <a href="~/Home" class="brand-link">
+        <img src="~/img/referral.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">Referral System</span>
+    </a>
+    <div class="sidebar">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="~/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                    <a href="#" class="d-block">Hi, @User.Identity.Name </a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="info">
+                    <a href="#" class="d-block">Hi, Visitor</a>
+                </div>
+            </div>
+        }
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item ">
+                    <a asp-controller="Home" asp-action="Index" class="nav-link @Url.MakeActiveClass("home","index")">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>
+                            Home
+                        </p>
+                    </a>
+                </li>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("SuperAdmin"))
+                {
+                    <li class="nav-item ">
+                        <a asp-controller="Operators" asp-action="List" class="nav-link @Url.MakeActiveClass("Operators","List")">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>
+                                Operators
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a asp-controller="Customers" asp-action="List" class="nav-link @Url.MakeActiveClass("Customers","List")">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Customers
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a asp-controller="CustomersPurchase" asp-action="List" class="nav-link @Url.MakeActiveClass("CustomersPurchase","List")">
+                            <i class="nav-icon fas fa-shopping-bag"></i>
+                            <p>
+                                Customers Purchase
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a asp-controller="CustomersPoints" asp-action="Index" class="nav-link @Url.MakeActiveClass("CustomersPoints","Index")">
+                            <i class="nav-icon fas fa-gift"></i>
+                            <p>
+                                Customers Points
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a asp-controller="RedeemPoints" asp-action="Index" class="nav-link @Url.MakeActiveClass("RedeemPoints","Index")">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>
+                                Redeem Points
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a asp-controller="ReferralConfiguration" asp-action="Index" class="nav-link @Url.MakeActiveClass("ReferralConfiguration","Index")">
+                            <i class="nav-icon fas fa-cogs"></i>
+                            <p>
+                                Referral Configuration
+                            </p>
+                        </a>
+                    </li>
+                }
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Operators"))
+                {
+                    <li class="nav-item ">
+                        <a asp-controller="CustomersPurchase" asp-action="List" class="nav-link @Url.MakeActiveClass("CustomersPurchase","List")">
+                            <i class="nav-icon fas fa-shopping-bag"></i>
+                            <p>
+                                Customers Purchase
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a asp-controller="CustomersPoints" asp-action="Index" class="nav-link @Url.MakeActiveClass("CustomersPoints","Index")">
+                            <i class="nav-icon fas fa-gift"></i>
+                            <p>
+                                Customers Points
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a asp-controller="RedeemPoints" asp-action="Index" class="nav-link @Url.MakeActiveClass("RedeemPoints","Index")">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <p>
+                                Redeem Points
+                            </p>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</aside>

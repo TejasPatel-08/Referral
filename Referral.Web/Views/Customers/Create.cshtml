@@ -1,0 +1,103 @@
+﻿@model Customers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+
+            <div class="card-header">
+                <h3 class="card-title">Add New Customers</h3>
+            </div>
+
+            <form asp-controller="Customers" asp-action="Create_Post" id="Form" method="post">
+
+                <div class="card-body">
+                    <div class="row">
+
+                        <partial name="Referral/_UserForm" />
+
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="radio-inline">
+                                <input type="radio" class="mr-1" name="radio" value="Direct" checked>Direct
+                            </label>
+                            <label class="radio-inline ml-2">
+                                <input type="radio" class="mr-1" name="radio" value="Referral">Referral
+                            </label>
+                        </div>
+                        <div class="col-md-8">
+                        </div>
+
+                        <partial name="Referral/_SearchCustomerByPhone" />
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    <button type="button" id="SubmitBtn" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary ml-2" onclick="location.href='@Url.Action("List", "Customers")'">Cancel</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(function () {
+            $('#ReferralCustomer_Div').hide();
+            SearchDivHideShow_ByRadioBtn();
+        });
+
+        function SearchDivHideShow_ByRadioBtn() {
+            $('input[name=radio]').click(function () {
+                if ($('input[name=radio]:checked').val() === "Referral")
+                    $('#ReferralCustomer_Div').show();
+                else
+                    $('#ReferralCustomer_Div').hide();
+            });
+        }
+
+        $("#SubmitBtn").on("click", function () {
+            if ($('#Form').valid()) {
+
+                if (!validate_Phone_Number()) {
+                    $('span[data-valmsg-for="PhoneNumber"]').text("PhoneNumber Invalid Format");
+                    return false;
+                }
+                $.ajax({
+                     type: 'GET',
+                     url: '@Url.Action("Check_PhoneNumber", "Common")',
+                     data: { PhoneNumber: $('#InputPhonenumber').val()},
+                        success: function (result) {
+                            if (result)
+                                $('span[data-valmsg-for="PhoneNumber"]').text("PhoneNumber Already Taken");
+                            else
+                                $('#Form').trigger("submit");
+                        }
+                    });
+            }
+            else {
+                var validator = $("form").validate();
+                validator.form();
+            }
+        });
+
+        function validate_Phone_Number() {
+            var number = $('#InputPhonenumber').val();
+            var filter = /^((\+[1-9]{1,4}[ \-]*)|(\([0-9]{2,3}\)[ \-]*)|([0-9]{2,4})[ \-]*)*?[0-9]{3,4}?[ \-]*[0-9]{3,4}?$/;
+            if (filter.test(number)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+    </script>
+}

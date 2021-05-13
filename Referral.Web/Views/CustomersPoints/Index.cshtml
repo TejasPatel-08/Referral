@@ -1,0 +1,67 @@
+﻿@model IEnumerable<CustomersPointsVM>
+@inject UserManager<Customers> csutomerData
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-secondary">
+
+            <div class="card-header">
+                <h2 class="card-title">Customers Points</h2>                
+            </div>
+
+            <div class="card-body">
+                <table id="table" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>FirstName</th>
+                            <th>LastName</th>
+                            <th>PhoneNumber</th>
+                            <th>Area</th>
+                            <th>PurchasePoints</th>
+                            <th>ReferralPoints</th>
+                            <th>RedeemPoint</th>
+                            <th>TotalPoints</th>
+                            <th>View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model)
+                        {
+                            Customers customers = await csutomerData.FindByIdAsync(@p.CustomerId.ToString());
+                        <tr>
+                            <td>@customers.FirstName</td>
+                            <td>@customers.LastName</td>
+                            <td>@customers.PhoneNumber</td>
+                            <td>@customers.Area</td>
+                            <td>@p.PurchasePoints</td>
+                            <td>@p.ReferralPoints</td>
+                            <td>@p.RedeemPoint</td>
+                            <td>@p.TotalPoints</td>
+                            <td>
+                                <a class="btn-sm btn-primary" href="@Url.Action("List", "CustomersPoints", new { userId=p.CustomerId})"><i class="fas fa-eye" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $("#table").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["csv", "excel", "pdf", "print", "colvis"],
+        }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)');
+    </script>
+}
+
+

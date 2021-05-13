@@ -1,0 +1,73 @@
+﻿@model Customers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+
+            <div class="card-header">
+                <h2 class="card-title">Add New Operators</h2>
+            </div>
+
+            <form id="Form" asp-controller="Operators" asp-action="Create_Post" method="post">
+
+                <div class="card-body">
+                    <div class="row">
+                        <partial name="Referral/_UserForm" />
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="button" id="SubmitBtn" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary ml-2" onclick="location.href='@Url.Action("List", "Operators")'">Cancel</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+
+        $("#SubmitBtn").on("click", function () {
+            if ($('#Form').valid()) {
+
+                if (!validate_Phone_Number()) {
+                    $('span[data-valmsg-for="PhoneNumber"]').text("PhoneNumber Invalid Format");
+                    return false;
+                }
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("Check_PhoneNumber", "Common")',
+                    data: { PhoneNumber: $('#InputPhonenumber').val() },
+                    success: function (result) {
+                        if (result)
+                            $('span[data-valmsg-for="PhoneNumber"]').text("PhoneNumber Already Taken");
+                        else
+                            $('#Form').trigger("submit");
+                    }
+                });
+            }
+            else
+            {
+                var validator = $("form").validate();
+                validator.form();
+            }
+        });
+
+        function validate_Phone_Number() {
+            var number = $('#InputPhonenumber').val();
+            var filter = /^((\+[1-9]{1,4}[ \-]*)|(\([0-9]{2,3}\)[ \-]*)|([0-9]{2,4})[ \-]*)*?[0-9]{3,4}?[ \-]*[0-9]{3,4}?$/;
+            if (filter.test(number)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}

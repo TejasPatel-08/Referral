@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <title>Referral System</title>
+    <partial name="Referral/_Styles" />
+    <partial name="Referral/_Scripts" />
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <partial name="Referral/_TopNavigation" />
+        <partial name="Referral/_MainNavigation" />
+        <div class="content-wrapper">
+            <div class="content py-2">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        <partial name="Referral/_Footer" />
+    </div>
+</body>
+</html>
+@RenderSection("Scripts", required: false)

@@ -1,0 +1,106 @@
+﻿<input type="hidden" value="" name="CustomerId" id="CustomerId_Input" runat="server" />
+<input type="hidden" value="" name="ReferralId" id="ReferralCustomerId_Input" runat="server" />
+<input type="hidden" value="" name="RedeemPoints.CustomerId" id="RId_Input" runat="server" />
+<input type="hidden" value="" name="CustomersPurchase.CustomerId" id="PId_Input" runat="server" />
+
+<div class="col-md-8 px-0" id="ReferralCustomer_Div">
+    <div class="form-group d-flex">
+        <div class="col-md-6">
+            <div class="input-group d-flex">
+                <input type="number" name="ReferralCustomerPhoneNumber_Input" class="form-control" id="CustomerPhoneNumber_Input" placeholder="Enter PhoneNumber">
+                <span class="input-group-append">
+                    <button type="button" class="btn btn-secondary" onclick="SearchCustomer_ByPhoneNumber()">Search!</button>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <input type="text" name="CustomerFirstname" class="form-control" id="CustomerFirstname_Input" placeholder="Customer Name" readonly>
+            <span class="text-danger" data-valmsg-replace="true" id="Error_msg">Customer not found</span>
+        </div>
+    </div>
+</div>
+
+
+<!--<div class="row">
+    <div class="col-md-4">-->
+@*<button type="button" id="Modal_Button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#modal-default">
+        <i class="fa fa-user-plus" aria-hidden="true"></i> Add New
+    </button>*@
+<!--</div>
+</div>-->
+@*<partial name="Referral/_AddCustomerByModal" />*@
+
+<script>
+    $(function () {
+        $("#Error_msg").hide();
+        HideErrorMsg_OnInputClick();
+        InputAutoFillPhoneNumber();
+        $("#Modal_Button").hide();
+    });
+
+    function InputAutoFillPhoneNumber() {
+        $("#CustomerPhoneNumber_Input").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("PhoneList_Get", "Common")',
+                    type: "GET",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { value: item };
+                        }))
+                    }
+                })
+            },
+        });
+    }
+
+    function HideErrorMsg_OnInputClick() {
+        $("#CustomerPhoneNumber_Input").on("input", function () {
+            $('#CustomerFirstname_Input').val("");
+            $("#Error_msg").hide();
+        });
+    }
+
+    function SearchCustomer_ByPhoneNumber() {
+        if (!$('#CustomerPhoneNumber_Input').val()) {
+            $('#Error_msg').show();
+            return false;
+        }
+        else
+            AjaxGetCustomerByPhoneNumber();
+    }
+
+    function AjaxGetCustomerByPhoneNumber() {
+        $.ajax({
+             type: 'GET',
+             url: '@Url.Action("CustomerByPhone_Get", "Common")',
+             data: { PhoneNumber: $('#CustomerPhoneNumber_Input').val()},
+            success: function (result) {
+                if (result) {
+                    if (result.firstName != null) {
+                        $('#CustomerFirstname_Input').val(result.firstName + " " + result.lastName);
+                        $('#CustomerId_Input').val(result.id);                        
+                        $('#ReferralCustomerId_Input').val(result.id);
+                        $('#RId_Input').val(result.id);
+                        $('#PId_Input').val(result.id);
+                        $('#Error_msg').hide();
+                    }
+                    else {
+                        $('#Error_msg').show();
+                        $('#CustomerFirstname_Input').val();
+                        $('#CustomerId_Input').val(0);
+                        $('#RId_Input').val(0);
+                        $('#PId_Input').val(0);
+                        $('#ReferralCustomerId_Input').val(0);
+                    }
+                }
+                else {
+                    $('#Error_msg').show();
+                    $("#Modal_Button").show();
+                }
+             }
+        });
+    }
+</script>

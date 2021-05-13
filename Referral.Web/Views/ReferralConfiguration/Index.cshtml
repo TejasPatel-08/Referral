@@ -1,0 +1,95 @@
+﻿@model ReferralConfig
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+
+            <div class="card-header">
+                <h2 class="card-title">Referral Configuration</h2>
+            </div>
+
+            <form asp-controller="ReferralConfiguration" asp-action="Update_Post" method="post">
+                <input type="hidden" data-val="true" name="Id" class="form-control" id="FMP" value="@Model.Id">
+                <input type="hidden" data-val="true" name="PPA.Id" class="form-control" id="ppa" value="@Model.PPA.Id">
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="FMP">First Minimum Purchase Amount(₹)</label>
+                                <span data-toggle='tooltip' title='For earning points customer must &#013; need to buy define amount !!!'><i class="fas fa-question-circle fa-sm text-muted pt-2"></i></span>
+                                <input type="number" data-val="true" name="FMP" class="form-control" id="FMP" value="@Model.FMP" placeholder="Enter First Minimum Purchase" data-val-required="The First Minimum Purchase field is required.">
+                                <span class="text-danger" data-valmsg-for="FMP" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Points">Point/Purchase Amount(₹)</label>                               
+                                <span data-toggle='tooltip' title='Set points criteria for how many points are assign &#013; againts amount for eg. 2 points againts 50 rs !!!'><i class="fas fa-question-circle fa-sm text-muted pt-2"></i></span>
+                                <div class=" d-flex py-0">
+                                    <input type="number" data-val="true" name="PPA.Points" class="form-control" id="Points" value="@Model.PPA.Points" placeholder="Enter Points" data-val-required="The Points field is required.">
+                                    <span class="text-danger" data-valmsg-for="Points" data-valmsg-replace="true"></span>
+                                    <input type="number" data-val="true" name="PPA.PurchaseAmount" class="form-control" id="PurchaseAmount" value="@Model.PPA.PurchaseAmount" placeholder="Enter PurchaseAmount" data-val-required="The PurchaseAmount field is required.">
+                                    <span class="text-danger" data-valmsg-for="PurchaseAmount" data-valmsg-replace="true"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="RedeemPointPercentage">Redeem Points(%)</label>
+                                <span data-toggle='tooltip' title='This points calculate how much customer read &#013; points from total earned points in percentage !!!'><i class="fas fa-question-circle fa-sm text-muted pt-2"></i></span>
+                                <input type="number" data-val="true" name="RedeemPointPercentage" class="form-control" id="RedeemPointPercentage" placeholder="Enter RedeemPointPercentage" value="@Model.RedeemPointPercentage" data-val-required="The RedeemPointPercentage field is required.">
+                                <span class="text-danger" data-valmsg-for="RedeemPointPercentage" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="ReferralPoints">Referral Points</label>
+                                <span data-toggle='tooltip' title='This Points assign to customer &#013; if they refer new customer!!!'><i class="fas fa-question-circle fa-sm text-muted pt-2"></i></span>
+
+                                <input type="number" data-val="true" name="ReferralPoints" class="form-control" id="ReferralPoints" value="@Model.ReferralPoints" placeholder="Enter ReferralPoints" data-val-required="The ReferralPoints field is required.">
+                                <span class="text-danger" data-valmsg-for="ReferralPoints" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="RedeemPointValue">Redeem PerPoint Amount(₹)</label>
+                                <span data-toggle='tooltip' title='Amount of 1 point in rupees !!!'><i class="fas fa-question-circle fa-sm text-muted pt-2"></i></span>
+
+                                <input type="number" data-val="true" name="RedeemPointValue" class="form-control" id="RedeemPointValue" value="@Model.RedeemPointValue" placeholder="Enter RedeemPointValue" data-val-required="The RedeemPointValue field is required.">
+                                <span class="text-danger" data-valmsg-for="RedeemPointValue" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+@if (TempData["AlertMessage"] != null)
+{
+    <input id="AlertMessage" value="@TempData["AlertMessage"]" type="hidden" />
+}
+else
+{
+    <input id="AlertMessage" value="" type="hidden" />
+}
+
+@section scripts{
+    <script type="text/javascript">
+        if ($('#AlertMessage').val() != "") {
+            toastr.success($('#AlertMessage').val())
+        }
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}
+
+

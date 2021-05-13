@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\BulkSmsOptions.cs" />
+    <Compile Remove="Models\CustomerModal.cs" />
+    <Compile Remove="Models\Customers.cs" />
+    <Compile Remove="Models\CustomersPoints.cs" />
+    <Compile Remove="Models\CustomersPurchase.cs" />
+    <Compile Remove="Models\Operators.cs" />
+    <Compile Remove="Models\PointType.cs" />
+    <Compile Remove="Models\RedeemPoints.cs" />
+    <Compile Remove="Models\ReferralConfig.cs" />
+    <Compile Remove="Models\SendGridOptions.cs" />
+    <Compile Remove="Models\SmtpOptions.cs" />
+    <Compile Remove="Models\TwilioOptions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Referral.Models\Referral.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+</Project>

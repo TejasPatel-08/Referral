@@ -1,0 +1,61 @@
+﻿<input type="hidden" name="Id" value="@Model.Id" />
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="InputFirstName">FirstName</label>
+            <input type="text" data-val="true" value="@Model.FirstName" name="FirstName" class="form-control" id="InputFirstName" placeholder="Enter FirstName" data-val-required="FirstName is required.">
+            <span class="text-danger" data-valmsg-for="FirstName" data-valmsg-replace="true"></span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="InputLastName">LastName</label>
+            <input type="text" data-val="true" value="@Model.LastName" name="LastName" class="form-control" id="InputLastName" placeholder="Enter LastName" data-val-required="LastName is required.">
+            <span class="text-danger" data-valmsg-for="LastName" data-valmsg-replace="true"></span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="InputEmail">Email</label>
+            <input type="email" @*data-val="true"*@ value="@Model.Email" name="Email" class="form-control" id="InputEmail" placeholder="Enter Email" data-val-required="Email is required.">
+            @*<span class="text-danger" data-valmsg-for="Email" data-valmsg-replace="true"></span>*@
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="InputAddress">Address</label>
+            <input type="text" data-val="true" value="@Model.Address" name="Address" class="form-control" id="InputAddress" placeholder="Enter Address">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="InputArea">Area</label>
+            <input type="text" data-val="true" value="@Model.Area" name="Area" class="form-control" id="InputArea" placeholder="Enter Area" data-val-required="Area is required.">
+            <span class="text-danger" data-valmsg-for="Area" data-valmsg-replace="true"></span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="InputCity">City</label>
+            <input type="text" data-val="true" name="City" value="@Model.City" class="form-control" id="InputCity" placeholder="Enter City">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="InputPhonenumber">PhoneNumber</label>
+            <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                   maxlength="10" data-val="true" value="@Model.PhoneNumber" name="PhoneNumber" class="form-control" id="InputPhonenumber" placeholder="Enter PhoneNumber" data-val-required="PhoneNumber is required.">
+            <span class="text-danger" data-valmsg-for="PhoneNumber" data-valmsg-replace="true"></span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="InputBirthdate">Birthdate</label>
+            <input type="date" data-val="true" name="Dob" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" id="InputBirthdate" placeholder="Enter Birthdate">
+        </div>
+    </div>
+
+<script>
+    $('[type="date"]').prop('max', function () {
+        return new Date().toJSON().split('T')[0];
+    });
+</script>

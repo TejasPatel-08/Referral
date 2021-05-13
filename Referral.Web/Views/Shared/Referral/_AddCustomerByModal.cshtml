@@ -1,0 +1,93 @@
+﻿<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Add Customer</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="text-danger" id="errors">
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="FirstName">FirstName</label>
+                        <input type="text" data-val="true" name="CustomerModalFirstName" class="form-control" id="FirstName" placeholder="Enter FirstName" data-val-required="The FirstName field is required.">
+                        <span class="text-danger" data-valmsg-for="CustomerModalFirstName" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="LastName">LastName</label>
+                        <input type="text" data-val="true" name="CustomerModalLastName" class="form-control" id="LastName" placeholder="Enter LastName" data-val-required="The LastName field is required.">
+                        <span class="text-danger" data-valmsg-for="CustomerModalLastName" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Area">Area</label>
+                        <input type="text" data-val="true" name="CustomerModalArea" class="form-control" id="Area" placeholder="Enter Area" data-val-required="The Area field is required.">
+                        <span class="text-danger" data-valmsg-for="CustomerModalArea" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Phonenumber">PhoneNumber</label>
+                        <input type="number" data-val="true" name="CustomerModalPhoneNumber" class="form-control" id="Phonenumber" placeholder="Enter PhoneNumber" data-val-required="The PhoneNumber field is required.">
+                        <span class="text-danger" data-valmsg-for="CustomerModalPhoneNumber" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" id="ModalSubmit_Button" class="btn btn-primary">Submit</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#ModalSubmit_Button").click(function () {
+        if (!$('#FirstName').val()) {
+            $('span[data-valmsg-for="CustomerModalFirstName"]').text("The FirstName field is required.");
+            return false;
+        }
+        else if (!$('#LastName').val()) {
+            $('span[data-valmsg-for="CustomerModalLastName"]').text("The LastName field is required.");
+            return false;
+        }
+        else if (!$('#Area').val()) {
+            $('span[data-valmsg-for="CustomerModalArea"]').text("The Area field is required.");
+            return false;
+        }
+        else if (!$('#Phonenumber').val()) {
+            $('span[data-valmsg-for="CustomerModalPhoneNumber"]').text("The PhoneNumber field is required.");
+            return false;
+        }
+
+        var customerModal = {
+            CustomerModalFirstName: $('#FirstName').val(),
+            CustomerModalLastName: $('#LastName').val(),
+            CustomerModalArea: $('#Area').val(),
+            CustomerModalPhoneNumber: $('#Phonenumber').val()
+        };
+
+        $.ajax({
+            url: '@Url.Action("SaveModalCustomers", "Customers")',
+            type: "POST",
+            dataType: "json",
+            data: { customerModal: customerModal },
+            success: function (data) {
+                if (data.succeeded) {
+                    //var inputs = $('#CreateCustomer_Form').serializeArray();
+                    //alert(inputs);
+                     window.location.href = '@Url.Action("Index", "Customers")';
+                }
+                else {
+                    $.each(data.errors, function (key, value) {
+                        $('#errors').append(value.description);
+                    })
+                }
+            }
+        });
+    });
+</script>

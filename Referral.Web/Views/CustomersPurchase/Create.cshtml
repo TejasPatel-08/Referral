@@ -1,0 +1,125 @@
+﻿@model CustomersPurchaseVM
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-secondary">
+
+            <div class="card-header">
+                <h2 class="card-title">Add CustomersPurchase</h2>
+            </div>
+
+            <form asp-controller="CustomersPurchase" asp-action="Create_Post" method="post">
+
+                <div class="card-body">
+                    <div class="row">
+
+                        <partial name="Referral/_SearchCustomerByPhone" />
+
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>PurchaseDate</label>
+                                <input type="date" data-val="true" value="@DateTime.Now.ToString("yyyy-MM-dd")" name="CustomersPurchase.PurchaseDate" class="form-control" data-val-required="The PurchaseDate is required.">
+                                <span class="text-danger" data-valmsg-for="CustomersPurchase.PurchaseDate" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="InputAmount">Purchase Amount(₹)</label>
+                                <input type="number" data-val="true" name="CustomersPurchase.Amount" class="form-control" id="InputAmount" placeholder="Enter Amount" data-val-required="The Amount is required.">
+                                <span class="text-danger" data-valmsg-for="CustomersPurchase.Amount" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="PointEarned">Purchase Earned Points</label>
+                                <input type="number" name="redeemPoints.PurchsePointEarned" class="form-control" id="PurchasePointEarned_Input" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="PointEarned">Total Points</label>
+                                <input type="number" name="redeemPoints.PointEarned" class="form-control" id="PointEarned_Input" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Max Redeem Points</label>
+                                <input type="number" name="redeemPoints.MaxRedeem" id="MaxRedeem_Input" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="RedeemAmount">Redeem Amount(₹)</label>
+                                <input type="number" data-val="true" name="redeemPoints.RedeemAmount" class="form-control" id="RedeemAmount_Input" placeholder="Enter Redeem Amount" data-val-required="The Redeem Amount field is required.">
+                                <span class="text-danger" data-valmsg-for="redeemPoints.RedeemAmount" data-valmsg-replace="true"></span>
+                                <input type="hidden" id="RedeemAmountDummy_Input" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" id="SubmitForm_Button" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary ml-2" onclick="location.href='@Url.Action("List", "CustomersPurchase")'">Cancel</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+
+        $('[type="date"]').prop('max', function () {
+            return new Date().toJSON().split('T')[0];
+        });
+
+        $("#RedeemAmount_Input").on("input", function () {
+            if (parseInt($("#RedeemAmount_Input").val()) > parseInt($("#RedeemAmountDummy_Input").val())) {
+                $('span[data-valmsg-for="RedeemAmount"]').text("Insufficient Redeem Value");
+            }
+            else
+                $('span[data-valmsg-for="RedeemAmount"]').text("");
+        });
+
+        $("#InputAmount").on("input", function () {
+            if (!$('#CustomerPhoneNumber_Input').val() || !$('#CustomerFirstname_Input').val()) {
+                $('span[data-valmsg-for="Amount"]').text("First Search Customer");
+                return false;
+            }
+            $.ajax({
+                 type: 'POST',
+                 url: '@Url.Action("RedeemPurchase_Get", "RedeemPoints")',
+                data: { CustomerId: $('#CustomerId_Input').val(), PurchaseAmount: $('#InputAmount').val()},
+                 success: function (result) {
+                     if (result) {
+                         if (result.totalPoint > 0) {
+                             $('#PointEarned_Input').val(result.totalPoint);
+                             $('#MaxRedeem_Input').val(result.maxRedeemPoint);
+                             $('#RedeemAmount_Input').val(result.redeemAmount.toFixed(2));
+                             $('#RedeemAmountDummy_Input').val(result.redeemAmount.toFixed(2));
+                             $('#PurchasePointEarned_Input').val(result.purchaseEarnedPoints);
+                         }
+                         else {
+                             $('#PointEarned_Input').val(0);
+                             $('#MaxRedeem_Input').val(0);
+                             $('#RedeemAmount_Input').val(0.00);
+                             $('#RedeemAmountDummy_Input').val(0.00);
+                             $('#PurchasePointEarned_Input').val(0);
+                         }
+                     }
+                 }
+             });
+        });
+
+    </script>
+}
+
+

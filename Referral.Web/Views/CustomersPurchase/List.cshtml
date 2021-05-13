@@ -1,0 +1,79 @@
+﻿@model IEnumerable<CustomersPurchase>
+@inject UserManager<Customers> csutomerData
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-secondary">
+            <div class="card-header">
+                <h2 class="card-title">Customers Purchase</h2>
+                <div class="card-tools">
+                    <div class="input-group input-group-sm" style="width: 105px;">
+                        <button type="button" class="btn-sm btn-default" onclick="location.href='@Url.Action("Create", "CustomersPurchase")'">
+                            <i class="fa fa-user-plus" aria-hidden="true"></i> Add New
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="table" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>FirstName</th>
+                            <th>LastName</th>
+                            <th>PhoneNumber</th>
+                            <th>Area</th>
+                            <th>Amount</th>
+                            <th>PurchaseDate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.OrderByDescending(X=>X.PurchaseDate))
+                        {
+                            Customers customers = await csutomerData.FindByIdAsync(@p.CustomerId.ToString());
+                            <tr>
+                                <td>@customers.FirstName</td>
+                                <td>@customers.LastName</td>
+                                <td>@customers.PhoneNumber</td>
+                                <td>@customers.Area</td>
+                                <td>@p.Amount</td>
+                                <td>@p.PurchaseDate.ToShortDateString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@if (TempData["AlertMessage"] != null)
+{
+    <input id="AlertMessage" value="@TempData["AlertMessage"]" type="hidden" />
+}
+else
+{
+    <input id="AlertMessage" value="" type="hidden" />
+}
+
+@section Scripts {
+    <script>
+        if ($('#AlertMessage').val() != "") {
+            toastr.success($('#AlertMessage').val())
+        }
+
+        $("#table").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["csv", "excel", "pdf", "print", "colvis"],
+        }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)');
+    </script>
+}
+
+
+
+
+
+

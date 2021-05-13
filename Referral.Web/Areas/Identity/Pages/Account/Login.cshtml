@@ -16,60 +16,72 @@
     <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <link rel="stylesheet" href="~/css/adminlte.min.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+        .HorizontalSummary li {
+            float: left;
+            margin-left: 30px;
+        }
+
+        .validation-summary-errors ul {
+            padding-left: 0;
+            padding-top: 0;
+        }
+    </style>
 </head>
 <body class="hold-transition login-page">
-    <div class="login-box">
-        <div class="login-logo">
-        </div>
-        <div class="card">
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
-                <form id="account" method="post">
-                    <span asp-validation-for="Input.PhoneNumber" class="text-danger small"></span>
-                    <div class="input-group mb-3">
-                        <input asp-for="Input.PhoneNumber" class="form-control" placeholder="phone number" />
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-phone"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
-                    <div class="input-group mb-3">
-                        <input asp-for="Input.Password" class="form-control" placeholder="password" />
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
+    <form id="account" method="post">
+        <div class="login-box">
+
+            <div class="card card-secondary">
+                <div class="card-header">
+                    <h4 class="card-title">Sign in to start your session</h4>
+                </div>
+
+                <div class="card-body">
                     <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                                <input type="checkbox" id="remember">
-                                <label for="remember">
-                                    Remember Me
-                                </label>
+                        <div class="col-md-12 px-0" style="margin-top:-20px;">
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger HorizontalSummary" })
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Input.PhoneNumber"></label>
+                                <input asp-for="Input.PhoneNumber" class="form-control input-group" placeholder="phonenumber" />
                             </div>
                         </div>
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Input.Password"></label>
+                                <input asp-for="Input.Password" class="form-control" placeholder="password" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group" style="margin-bottom:-15px">
+                                <p class="d-flex justify-content-between">
+                                    <a id="forgot-password" asp-page="./ForgotPassword">Forgot Password</a>
+                                    <a asp-area="Identity" asp-page="/Account/Register" class="">Sign Up</a>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group mt-2">
-                        <p>
-                            <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                        </p>
-                        <p>
-                            Don't have an account? <a asp-area="Identity" asp-page="/Account/Register" class="ml-1">Sign Up</a>
-                        </p>
+                </div>
+
+                <div class="card-footer d-flex justify-content-between">
+                    <div class="icheck-primary">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">
+                            Remember Me
+                        </label>
                     </div>
-                    <div asp-validation-summary="All" class="text-danger small"></div>
-                </form>
+                    <div style="margin-right:-110px">
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </div>
+                </div>
+
             </div>
         </div>
-    </div>
+    </form>
 </body>
 </html>
+
 <partial name="Referral/_Scripts" />
 <partial name="_ValidationScriptsPartial" />

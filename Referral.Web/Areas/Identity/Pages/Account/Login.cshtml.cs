@@ -40,11 +40,11 @@ namespace Referral.Web.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "PhoneNumber is required")]
             [Phone]
             public string PhoneNumber { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Password is required")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 

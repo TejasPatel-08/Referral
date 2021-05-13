@@ -38,7 +38,7 @@
                 @if (User.Identity.IsAuthenticated && User.IsInRole("SuperAdmin"))
                 {
                     <li class="nav-item ">
-                        <a asp-controller="Operators" asp-action="List" class="nav-link @Url.MakeActiveClass("Operators","List")">
+                        <a asp-controller="Operators" asp-action="List" class="nav-link @Url.MakeActiveClass("Operators","List") @Url.MakeActiveClass("Operators","Create") @Url.MakeActiveClass("Operators","Update")">
                             <i class="nav-icon fas fa-user"></i>
                             <p>
                                 Operators
@@ -46,7 +46,7 @@
                         </a>
                     </li>
                     <li class="nav-item ">
-                        <a asp-controller="Customers" asp-action="List" class="nav-link @Url.MakeActiveClass("Customers","List")">
+                        <a asp-controller="Customers" asp-action="List" class="nav-link @Url.MakeActiveClass("Customers","List") @Url.MakeActiveClass("Customers","Create") @Url.MakeActiveClass("Customers","Update")">
                             <i class="nav-icon fas fa-users"></i>
                             <p>
                                 Customers
@@ -54,7 +54,7 @@
                         </a>
                     </li>
                     <li class="nav-item ">
-                        <a asp-controller="CustomersPurchase" asp-action="List" class="nav-link @Url.MakeActiveClass("CustomersPurchase","List")">
+                        <a asp-controller="CustomersPurchase" asp-action="List" class="nav-link @Url.MakeActiveClass("CustomersPurchase","List") @Url.MakeActiveClass("CustomersPurchase","Create")">
                             <i class="nav-icon fas fa-shopping-bag"></i>
                             <p>
                                 Customers Purchase
@@ -62,7 +62,7 @@
                         </a>
                     </li>
                     <li class="nav-item ">
-                        <a asp-controller="CustomersPoints" asp-action="Index" class="nav-link @Url.MakeActiveClass("CustomersPoints","Index")">
+                        <a asp-controller="CustomersPoints" asp-action="Index" class="nav-link @Url.MakeActiveClass("CustomersPoints","Index") @Url.MakeActiveClass("CustomersPoints","List")">
                             <i class="nav-icon fas fa-gift"></i>
                             <p>
                                 Customers Points

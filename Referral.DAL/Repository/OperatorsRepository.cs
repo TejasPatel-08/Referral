@@ -27,6 +27,7 @@ namespace Referral.DAL.Repository
             customers.UserName = customers.PhoneNumber;
             customers.PhoneNumberConfirmed = true;
             customers.IsActive = true;
+            customers.CreatedDate = DateTime.Now;
 
             await _userManager.CreateAsync(customers, "Password@123");
 

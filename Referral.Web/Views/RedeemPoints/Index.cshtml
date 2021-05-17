@@ -32,23 +32,25 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="PointEarned">Total Points</label>
-                                <input type="number" name="PointEarned" class="form-control" id="PointEarned_Input" readonly>
+                                <input type="number" name="RedeemPoints.PointEarned" class="form-control" id="PointEarned_Input" readonly>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Max Redeem Points</label>
-                                <input type="number" name="MaxRedeem" id="MaxRedeem_Input" class="form-control" readonly>
+                                <input type="number" name="RedeemPoints.MaxRedeem" id="MaxRedeem_Input" class="form-control" readonly>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="RedeemAmount">Redeem Amount(₹)</label>
-                                <input type="number" data-val="true" name="RedeemAmount" class="form-control" id="RedeemAmount_Input" placeholder="Enter Redeem Amount" data-val-required="The Redeem Amount field is required.">
+                                <input type="number" data-val="true" name="RedeemPoints.RedeemAmount" class="form-control" id="RedeemAmount_Input" placeholder="Enter Redeem Amount" data-val-required="The Redeem Amount field is required.">
                                 <span class="text-danger" data-valmsg-for="RedeemAmount" data-valmsg-replace="true"></span>
                                 <input type="hidden" id="RedeemAmountDummy_Input" />
                             </div>
                         </div>
+                        <input type="hidden" name="RedeemPoints.PurchaseEarnedPoints" class="form-control" value="0">
+
                     </div>
                 </div>
                 <div class="card-footer">

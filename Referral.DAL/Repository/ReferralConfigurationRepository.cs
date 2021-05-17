@@ -2,6 +2,7 @@
 using Referral.DAL.Context;
 using Referral.Models;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Referral.DAL.Repository
 {
@@ -21,7 +22,14 @@ namespace Referral.DAL.Repository
                 PPA = new PointPurchaseAmount()
             };
 
+            var ppaDATA = from rc in _applicationDbContext.ReferralConfig
+                       join ppa in _applicationDbContext.PointPurchaseAmount
+                       on rc.PPA.Id equals ppa.Id
+                       select new { ppa };
+
             var result = await _applicationDbContext.ReferralConfig.Include("PPA").SingleOrDefaultAsync();
+
+            result.PPA = ppaDATA.Select(x => x.ppa).FirstOrDefault();
 
             if (result != null)
                 referralConfig = result;

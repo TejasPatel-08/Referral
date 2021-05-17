@@ -14,6 +14,7 @@ namespace Referral.Web.Controllers
             _referralConfigurationService = referralConfigurationService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             return View(await _referralConfigurationService.GetReferralConfiguration());
